@@ -11,3 +11,16 @@ made up of above list.
 > impelment react apollo hooks
 
 ### Let's go with me!
+
+### To do list
+- make the all of the pages.
+- set up database and data modeling.
+- write api with graph ql
+- set mobx into frontend
+- implement register page.
+- implement login page.
+- implement main page.
+- implement write diary page.
+- implement modify diary page.
+- implement remove diary.
+- deploy.
