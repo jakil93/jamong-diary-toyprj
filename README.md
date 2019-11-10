@@ -18,11 +18,11 @@ made up of above list.
 ### To do list
 
 - make the all of the pages. (19/11/10 12:29 DONE)
-- set up database and data modeling.
-- write api with graph ql
-- set mobx into frontend
+- set up database and data modeling. (19/11/10 14:22 DONE)
+- write api with graph ql (19/11/10 14:22 ~ PROCESSING..)
+- set mobx into frontend (19/11/10 14:22 DONE)
 - implement register page.
-- implement login page.
+- implement login page. (19/11/10 14:22 DONE)
 - implement main page.
 - implement write diary page.
 - implement modify diary page.
