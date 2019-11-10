@@ -27,4 +27,4 @@ made up of above list.
 - implement write diary page.
 - implement modify diary page.
 - implement remove diary.
-- deploy.
+- voila! my awesome toy project! 😊 ALL DONE!!!
