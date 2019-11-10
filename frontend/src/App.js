@@ -8,7 +8,7 @@ import Register from "components/auth/Register";
 import DairyDetail from "components/diary/DiaryDetail";
 import DiaryForm from "components/diary/DiaryForm";
 
-const App = () => {
+const App = ({}) => {
   return (
     <Container maxWidth="xl">
       <Header />

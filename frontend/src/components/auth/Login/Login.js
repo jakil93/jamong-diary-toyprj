@@ -1,16 +1,17 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { withRouter } from "react-router-dom";
 import Copyright from "components/common/Copyright/Copyright";
+import { useState } from "react";
+import { request } from "graphql-request";
+import { inject } from "mobx-react";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -24,10 +25,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center"
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
@@ -37,41 +34,48 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({ history }) => {
+const Login = ({ history, baseStore }) => {
   const classes = useStyles();
 
   const goRegister = () => {
     history.push("/auth/register");
   };
 
+  const [form, setValues] = useState({ username: "", password: "" });
+  const updateField = e => {
+    setValues({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          로그인
+          그대의 이야기도 함께하기.
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            value={form.username}
+            onChange={updateField}
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="username"
-            label="당신의 별명"
             name="username"
-            autoComplete="username"
-            autoFocus
+            label="별명"
+            type="text"
+            id="username"
           />
           <TextField
+            value={form.password}
+            onChange={updateField}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             name="password"
-            label="당신의 비밀번호"
+            label="비밀번호"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -81,10 +85,30 @@ const Login = ({ history }) => {
             label="Remember me"
           /> */}
           <Button
+            className={classes.submit}
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick={() => {
+              const endpoint = "/graphql";
+              const { username, password } = form;
+              const query = `{
+                login(username : "${username}", password : "${password}"){
+                    username
+                }
+              }`;
+
+              request(endpoint, query).then(data => {
+                if (data.login) {
+                  const { username } = data.login;
+                  alert(`${username}님 오늘도 자몽 다이어리와 함께해요.`);
+                  baseStore.setLogged(true);
+                  history.push("/");
+                } else {
+                  alert("별명 또는 비밀번호가 틀렸습니다.");
+                }
+              });
+            }}
           >
             로그인
           </Button>
@@ -109,4 +133,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+export default inject("baseStore")(withRouter(Login));

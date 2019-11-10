@@ -2,6 +2,8 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
+import { inject, observer } from "mobx-react";
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -11,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Header = ({ history }) => {
+const Header = ({ history, baseStore }) => {
   const classes = useStyles();
 
   const goLogin = () => {
@@ -28,12 +30,18 @@ const Header = ({ history }) => {
         <Typography onClick={goHome} variant="h6" className={classes.title}>
           Jamong Diary
         </Typography>
-        <Button color="inherit" onClick={goLogin}>
-          Login
-        </Button>
+        {baseStore.logged ? (
+          <Button color="inherit" onClick={goLogin}>
+            logout
+          </Button>
+        ) : (
+          <Button color="inherit" onClick={goLogin}>
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
 };
 
-export default withRouter(Header);
+export default inject("baseStore")(observer(withRouter(Header)));
